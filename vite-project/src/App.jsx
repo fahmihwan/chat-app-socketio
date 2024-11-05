@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Route, Router, Routes } from "react-router-dom";
-import FirstUser from "./view/FirstUser";
-import SecondUser from "./view/SecondUser";
-// import io from "socket.io-client";
-
-// const socket = io("http://localhost:3000", {
-//     withCredentials: true,
-// });
+import { Route, Routes } from "react-router-dom";
+import ChatRoom from "./view/ChatRoom";
+import Login from "./view/LoginUser";
 
 function App() {
     return (
         <div>
             <Routes>
-                <Route path="first" element={<FirstUser />} />
-                <Route path="second" element={<SecondUser />} />
+                <Route path="" element={<Login />} />
+                <Route path="chat-room" element={<ChatRoom />} />
             </Routes>
         </div>
     );

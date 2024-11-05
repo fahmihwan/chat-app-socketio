@@ -1,21 +1,24 @@
 import { useState, useEffect } from "react";
 import { InputMessage } from "../components/Input";
 import Nav from "../components/Nav";
-import io from "socket.io-client";
 import { ChatBubleLeft, ChatBubleRight } from "../components/Other";
 import Sidebar from "../components/Sidebar";
 
+
+
+import io from "socket.io-client";
 const socket = io.connect("http://localhost:3000");
 
-export const FirstUser = () => {
+
+
+export const ChatRoom = () => {
     const [room, setRoom] = useState("22");
 
     const [inputValue, setInputValue] = useState("");
     const [message, setMessage] = useState("");
 
     const handleKeyPress = (event) => {
-        // socket.message =
-        // socket.message =
+
         if (event.key === "Enter") {
             socket.emit("send_message", { message, room });
             setMessage(`Anda mengetik: ${inputValue}`);
@@ -26,7 +29,7 @@ export const FirstUser = () => {
     useEffect(() => {
         socket.on("receive_message", (data) => {
             console.log(data);
-            setMessage(data);
+            // setMessage(data);
         });
     }, [socket]);
 
@@ -77,4 +80,4 @@ export const FirstUser = () => {
     );
 };
 
-export default FirstUser;
+export default ChatRoom;
