@@ -5,7 +5,9 @@ const prisma = require("../prisma/client")
 
 
 const getContactUsers = async (req, res) => {
-    const result = await prisma.$queryRaw`select * from users`;
+    const { senderId } = req.params
+
+    const result = await prisma.$queryRaw`select * from users WHERE id != ${Number(senderId)}`;
     res.status(200).send({
         data: result,
         success: true,

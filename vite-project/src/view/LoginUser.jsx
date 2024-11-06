@@ -1,50 +1,44 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { InputLogin } from "../components/Input";
-import { useNavigate } from "react-router-dom";
-
-import io from "socket.io-client";
-const socket = io.connect("http://localhost:3000");
+import { Link, useNavigate } from "react-router-dom";
+import { authenticated } from "../api/authenticated";
+import { useDispatch } from "react-redux";
+import { setUserSlice } from "../redux/features/userSlice";
+// import io from "socket.io-client";
+// const socket = io.connect("http://localhost:3000");
 
 export const LoginUser = () => {
-    const [username, setUsername] = useState('');
-    const [fullName, setFullname] = useState('');
+
+    const dispatch = useDispatch()
+    const [username, setUsername] = useState('fahmihwan');
+    const [password, setPassword] = useState('qweqwe123');
     const navigate = useNavigate();
 
-    const sendUser = () => {
+    const sendUser = async () => {
 
+        const isAuth = await authenticated({
+            username: username,
+            password: password
+        });
 
-        let localData = localStorage.getItem('users')
+        if (isAuth[1] === true) {
 
-        if (localData) {
-            let users = JSON.parse(localData);
-            users.push({ username: username, fullName: fullName })
-            localStorage.setItem('users', JSON.stringify(JSON.stringify(users)))
+            dispatch(setUserSlice({
+                id: isAuth[2].id,
+                fullname: isAuth[2].fullname,
+                username: isAuth[2].username,
+            }))
+
+            navigate("/chat-room", { replace: true });
         } else {
-            localStorage.setItem('users', JSON.stringify([{ username: username, fullName: fullName }]))
+            // setToastError({
+            //     isError: true,
+            //     message: "Username or password Invalid",
+            // });
         }
-
-        return navigate("/chat-room");
-
-
-
-
-        // const room = 100;
-        // socket.emit("join_room", room);
-        // socket.emit('send_message', { username: username, fullName: fullName });
-
-        // if (socket.connected) {
-        //     // return 
-        //     return navigate("/chat-room");
-        // }
     }
 
-    // useEffect(() => {
-    //     socket.on("receive_message", (data) => {
-    //         console.log(data);
-    //     });
-    //     console.log(socket);
 
-    // }, [socket]);
 
     return (
         <div className="flex justify-center items-center h-screen">
@@ -62,16 +56,16 @@ export const LoginUser = () => {
                     />
 
                     <InputLogin
-                        type="text"
-                        label="Full Name"
-                        value={fullName}
-                        onChange={(e) => setFullname(e.target.value)}
+                        type="password"
+
+                        label="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                     // placeholder="Ketik sesuatu dan tekan Enter"
                     />
-
                     <div className="card-actions justify-end mt-4">
-                        <button onClick={sendUser} className="btn btn-primary">Accept</button>
-
+                        <button onClick={sendUser} className="btn btn-primary">Login</button>
+                        <Link to="/register" className="btn btn-warning">Reister</Link>
                     </div>
                 </div>
             </div>

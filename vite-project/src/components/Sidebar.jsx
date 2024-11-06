@@ -1,6 +1,10 @@
+import { useEffectAllContact } from "../hooks/useEffectAllContact";
+
 const Sidebar = () => {
     // localStorage.getItem('');
 
+    const { data, error } = useEffectAllContact()
+    console.log(data);
     return (
         <div className="p-5 border border-gray-600 h-full">
             <h1 className="">Chats</h1>
