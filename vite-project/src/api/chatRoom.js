@@ -9,28 +9,29 @@ export const allContact = async (senderId) => {
     }
 }
 
-// export const createCar = async (payload) => {
 
-//     const formData = new FormData()
-//     formData.append('daily_rental_price', payload.daily_rental_price)
-//     formData.append('merk', payload.merk)
-//     formData.append('user_id', payload.user_id)
-//     formData.append('license_plate', payload.license_plate)
-//     formData.append('year', payload.year)
-//     formData.append('file', payload.file)
-//     formData.append('address', payload.address)
+export const storeMessage = async (payload) => {
 
-//     try {
-//         await csrfToken()
-//         const response = await apiClient.post('/car', formData, {
-//             headers: { 'Content-Type': 'multipart/form-data' }
-//         })
-//         return response.data
-//     } catch (error) {
-//         return error;
-//     }
+    // const formData = new FormData()
 
-// }
+
+    // formData.append('sender_id', payload.sender_id)
+    // formData.append('content', payload.content)
+    // formData.append('receive_id', payload.receive_id)
+    // formData.append('file', payload.file)
+
+    try {
+        // await csrfToken()
+        const response = await apiClient.post('/message', payload)
+        // const response = await apiClient.post('/message', formData, {
+        //     headers: { 'Content-Type': 'multipart/form-data' }
+        // })
+        return response.data
+    } catch (error) {
+        return error;
+    }
+
+}
 
 // export const findCarByUserId = async (id) => {
 //     try {

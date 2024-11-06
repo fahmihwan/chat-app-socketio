@@ -3,19 +3,22 @@ import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, 
 // import startedBookingSlice from "../features/startedBookingSlice";
 import storage from 'redux-persist/lib/storage';
 import userSlice from "../features/userSlice";
-// import userSlice from "../features/userSlice";
+import chooseUserSlice from "../features/chooseUserSlice";
 
 // mengabungkan lebih dari 1 slice atau reducers, kedalam rootReducer
 const rootReducer = combineReducers({
     // startedBooking: startedBookingSlice,
-    user: userSlice
+    chooseUser: chooseUserSlice,
+    user: userSlice,
+
     // tambahkan di sini jika ada slice lagi 
 })
 
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['user'], // Hanya persist state dari startedBooking & user yang akan di persist (opsional)
+    whitelist: ['user', 'chooseUser'],
+    // Hanya persist state dari startedBooking & user yang akan di persist (opsional)
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

@@ -1,10 +1,20 @@
+import { useDispatch } from "react-redux";
 import { useEffectAllContact } from "../hooks/useEffectAllContact";
+import { setChooseUserSlice } from "../redux/features/chooseUserSlice";
 
 const Sidebar = () => {
-    // localStorage.getItem('');
-
     const { data, error } = useEffectAllContact()
-    console.log(data);
+    const dispatch = useDispatch()
+
+    const handleChooseUser = (d) => {
+
+        dispatch(setChooseUserSlice({
+            id: d?.id,
+            fullname: d?.fullname,
+            username: d?.username,
+        }))
+    }
+
     return (
         <div className="p-5 border border-gray-600 h-full">
             <h1 className="">Chats</h1>
@@ -27,35 +37,24 @@ const Sidebar = () => {
                         </svg>
                     </label>
                 </li>
-                <UserEl />
-                <UserEl />
-                {/* <li>
-                    <div className="flex items-center gap-3">
-                        <div className="avatar">
-                            <div className="mask mask-squircle h-12 w-12">
-                                <img
-                                    src="https://img.daisyui.com/images/profile/demo/3@94.webp"
-                                    alt="Avatar Tailwind CSS Component"
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <div className="font-bold">Brice Swyre</div>
-                            <div className="text-sm opacity-50">China</div>
-                        </div>
-                    </div>
-                </li> */}
+
+                {data?.length > 0 && data.map((d, index) => (
+                    <UserEl key={index} fullname={d?.fullname} username={d?.username} onClick={() => handleChooseUser(d)} />
+                ))}
+
             </ul>
-        </div>
+
+        </div >
     );
 };
 export default Sidebar;
 
 
-const UserEl = () => {
+const UserEl = ({ fullname, index, username, onClick }) => {
+
     return (
-        <li>
-            <div className="flex items-center gap-3 mb-5">
+        <li key={index} className="hover:bg-neutral hover:rounded-lg cursor-pointer" onClick={(e) => onClick(e)}>
+            <div className="flex items-center gap-3 mb-5 ">
                 <div className="avatar">
                     <div className="mask mask-squircle h-12 w-12">
                         <img
@@ -65,11 +64,12 @@ const UserEl = () => {
                     </div>
                 </div>
                 <div>
-                    <div className="font-bold">Hart Hagerty</div>
-                    <div className="text-sm opacity-50">United States</div>
+                    <div className="font-bold">{fullname}</div>
+                    <div className="text-sm opacity-50">@{username}</div>
                 </div>
             </div>
         </li>
+
 
     )
 }

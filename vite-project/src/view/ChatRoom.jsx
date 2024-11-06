@@ -3,20 +3,38 @@ import { InputMessage } from "../components/Input";
 import Nav from "../components/Nav";
 import { ChatBubleLeft, ChatBubleRight } from "../components/Other";
 import Sidebar from "../components/Sidebar";
+import { useSelector } from "react-redux";
+import { storeMessage } from "../api/chatRoom";
 
 
 
 
 export const ChatRoom = () => {
-    const [room, setRoom] = useState("22");
+    const receiveUser = useSelector((state) => state.chooseUser);
+    const senderUser = useSelector((state) => state.user);
+    const [valueMessage, setValueMessage] = useState("");
 
-    const [inputValue, setInputValue] = useState("");
-    const [message, setMessage] = useState("");
+    const [listMessage, setListMessage] = useState([]);
 
-    const handleKeyPress = (event) => {
+    useEffect(() => {
 
-        if (event.key === "Enter") {
-            // 
+    }, [receiveUser])
+
+
+
+
+
+
+
+    const handleKeyPress = async (event) => {
+        if (event.key === "Enter" && valueMessage != '') {
+            const cek = await storeMessage({
+                sender_id: senderUser.id,
+                content: valueMessage,
+                receive_id: receiveUser.id
+            });
+            console.log(cek);
+            setValueMessage('')
         }
     };
 
@@ -47,13 +65,12 @@ export const ChatRoom = () => {
                                 <ChatBubleRight />
                                 <ChatBubleRight />
                                 <ChatBubleRight />
-                                {message}
                             </div>
                             <div className="px-14 absolute bottom-0 w-full">
                                 <InputMessage
                                     type="text"
-                                    value={inputValue}
-                                    onChange={(e) => setInputValue(e.target.value)}
+                                    value={valueMessage}
+                                    onChange={(e) => setValueMessage(e.target.value)}
                                     onKeyPress={handleKeyPress}
                                     placeholder="Ketik sesuatu dan tekan Enter"
                                 />
