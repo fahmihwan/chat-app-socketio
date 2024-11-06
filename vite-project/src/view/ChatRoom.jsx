@@ -1,31 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { InputMessage } from "../components/Input";
 import Nav from "../components/Nav";
 import { ChatBuble } from "../components/Other";
 import Sidebar from "../components/Sidebar";
 import { useSelector } from "react-redux";
 import { getMessageHistory, storeMessage } from "../api/chatRoom";
-import { useEffectMessageHistories } from "../hooks/useEffectAllContact";
+
 import Cookies from 'js-cookie';
 
 
 export const ChatRoom = () => {
-    // const user = Cookies.get('token')
-    // console.log(user);
-
     const receiveUser = useSelector((state) => state.chooseUser);
     const senderUser = useSelector((state) => state.user);
     const [valueMessage, setValueMessage] = useState("");
     const user_id = Cookies.get('user_id')
-    // console.log(user_id);
+    const chatEndRef = useRef(null);
 
     const [listMessage, setListMessage] = useState([]);
 
     const fetchData = async () => {
         try {
             const response = await getMessageHistory(senderUser.id, receiveUser.id);
-            // console.log(response);
-            setListMessage(response.data);
+            await setListMessage(response.data);
+            await chatEndRef.current?.scrollIntoView({ behavior: "smooth" })
         } catch (error) {
             console.log(error);
 
@@ -33,7 +30,13 @@ export const ChatRoom = () => {
     };
 
     useEffect(() => {
-        fetchData();
+
+        if (receiveUser?.id != undefined && senderUser?.id != undefined) {
+            fetchData();
+        }
+        chatEndRef.current?.scrollIntoView({ behavior: "smooth" })
+
+
     }, [senderUser.id, receiveUser.id])
 
 
@@ -43,12 +46,12 @@ export const ChatRoom = () => {
 
     const handleKeyPress = async (event) => {
         if (event.key === "Enter" && valueMessage != '') {
-            const cek = await storeMessage({
+            await storeMessage({
                 sender_id: senderUser.id,
                 content: valueMessage,
                 receive_id: receiveUser.id
             });
-            console.log(cek);
+
             setValueMessage('')
             fetchData()
         }
@@ -68,14 +71,12 @@ export const ChatRoom = () => {
                     <div className="h-full  w-full ">
                         <Nav />
                         <div className=" relative h-[800px]">
-                            <div className="h-[700px] overflow-y-scroll px-10">
+                            <div className="h-[700px] overflow-y-scroll px-10" >
                                 {listMessage?.length > 0 && listMessage.map((d, index) => (
-                                    // <UserEl key={index} fullname={d?.fullname} username={d?.username} onClick={() => handleChooseUser(d)} />
                                     <ChatBuble key={index} content={d?.content} createdAt={d.createdAt} isRight={d.sender_id == user_id ? true : false} />
-                                    // <ChatBubleRight key={index} content={d?.content} createdAt={d.createdAt} />
                                 ))}
 
-
+                                <div ref={chatEndRef} />
                             </div>
                             <div className="px-14 absolute bottom-0 w-full">
                                 <InputMessage
@@ -86,6 +87,7 @@ export const ChatRoom = () => {
                                     placeholder="Ketik sesuatu dan tekan Enter"
                                 />
                             </div>
+
                         </div>
                     </div>
                 </div>

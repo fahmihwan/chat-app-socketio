@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffectAllContact } from "../hooks/useEffectAllContact";
 import { setChooseUserSlice } from "../redux/features/chooseUserSlice";
 import Cookies from 'js-cookie';
@@ -42,7 +42,7 @@ const Sidebar = () => {
                 <div className="w-full p-5">
                     <ul className="" >
                         <li>
-                            <label className="input input-bordered flex  items-center w-full mb-5 ">
+                            <label className="input input-bordered flex items-center w-full mb-5 ">
                                 <input type="text" className="" placeholder="Search" />
                                 {/* <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +60,7 @@ const Sidebar = () => {
                         </li>
 
                         {data?.length > 0 && data.map((d, index) => (
-                            <UserEl key={index} fullname={d?.fullname} username={d?.username} onClick={() => handleChooseUser(d)} />
+                            <UserEl key={index} id={d.id} fullname={d?.fullname} username={d?.username} onClick={() => handleChooseUser(d)} />
                         ))}
 
                     </ul>
@@ -75,19 +75,14 @@ const Sidebar = () => {
 export default Sidebar;
 
 
-const UserEl = ({ fullname, index, username, onClick }) => {
+const UserEl = ({ fullname, id, username, onClick }) => {
+    const receiveUser = useSelector((state) => state.chooseUser);
 
     return (
-        <li key={index} className="hover:bg-neutral hover:rounded-lg cursor-pointer" onClick={(e) => onClick(e)}>
+        <li className={`cursor-pointer ${id == receiveUser.id ? "bg-[#1d232a]" : ""} rounded-lg `} onClick={(e) => onClick(e)}>
             <div className="flex items-center gap-3 mb-5 ">
                 <div className="avatar">
-                    {/* <div className="mask mask-squircle h-12 w-12">
-                        <img
-                            src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-                            alt="Avatar Tailwind CSS Component"
-                        />
-                    </div> */}
-                    <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 ">
+                    <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 m-2 ">
                         <svg
                             className="absolute w-12 h-12 text-gray-400 -left-1"
                             fill="currentColor"

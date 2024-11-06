@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
 import { ProtectedRoute, ProtectedRouteisNotAuth } from "./ProtectedRoute";
 // import ChatRoom from "../view/ChatRoom";
 // const ListTransactionHistory = lazy(() => import('../view/profile/ListTransactionHistory'))
