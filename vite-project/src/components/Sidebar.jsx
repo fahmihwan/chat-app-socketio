@@ -3,6 +3,7 @@ import { useEffectAllContact } from "../hooks/useEffectAllContact";
 import { setChooseUserSlice } from "../redux/features/chooseUserSlice";
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
+import { setUserSlice } from "../redux/features/userSlice";
 
 const Sidebar = () => {
     const { data, error } = useEffectAllContact()
@@ -20,9 +21,12 @@ const Sidebar = () => {
 
 
     const logout = async () => {
+        dispatch(setChooseUserSlice({}))
+        dispatch(setUserSlice({}))
         localStorage.clear()
+        sessionStorage.clear()
         Cookies.remove('token')
-        Cookies.remove('token_id')
+        Cookies.remove('user_id')
         navigate('/', { replace: true })
     }
 
