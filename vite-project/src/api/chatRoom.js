@@ -10,6 +10,17 @@ export const allContact = async (senderId) => {
 }
 
 
+export const getMessageHistory = async (senderId, receiveId) => {
+    try {
+        const response = await apiClient.get(`/message/${senderId}/${receiveId}/room`)
+        return response.data
+    } catch (error) {
+        return error
+    }
+}
+
+
+
 export const storeMessage = async (payload) => {
 
     // const formData = new FormData()

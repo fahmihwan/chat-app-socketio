@@ -15,10 +15,11 @@ const getContactUsers = async (req, res) => {
     })
 }
 
-const getMessagesUser = async (req, res) => {
+const getMessageHistory = async (req, res) => {
     const { senderId, receiveId } = req.params
-
-    const result = await prisma.$queryRaw`select * from message`;
+    const result = await prisma.$queryRaw`select * from messages ms
+     where ms.sender_id = ${Number(senderId)} 
+     and ms.receive_id =${Number(receiveId)}`;
 
     res.status(200).send({
         data: result,
@@ -26,6 +27,15 @@ const getMessagesUser = async (req, res) => {
         message: 'list messages'
     })
 }
+
+
+// const getHistoryOfMessages = async (params) => {
+
+//     const result = await prisma.$queryRaw`select ms.* from messages ms
+//                     inner join users usr_send on ms.sender_id = usr_send.id
+//                     inner join users usr_receive on ms.receive_id = usr_receive.id
+//                     where ms.sender_id = Number() and ms.receive_id =2`
+// }
 
 const storeMessage = async (req, res) => {
     try {
@@ -51,9 +61,8 @@ const storeMessage = async (req, res) => {
         });
 
     }
-
 }
 
 
 
-module.exports = { getContactUsers, getMessagesUser, storeMessage }
+module.exports = { getContactUsers, getMessageHistory, storeMessage }

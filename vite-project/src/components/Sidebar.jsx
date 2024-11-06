@@ -56,11 +56,25 @@ const UserEl = ({ fullname, index, username, onClick }) => {
         <li key={index} className="hover:bg-neutral hover:rounded-lg cursor-pointer" onClick={(e) => onClick(e)}>
             <div className="flex items-center gap-3 mb-5 ">
                 <div className="avatar">
-                    <div className="mask mask-squircle h-12 w-12">
+                    {/* <div className="mask mask-squircle h-12 w-12">
                         <img
                             src="https://img.daisyui.com/images/profile/demo/2@94.webp"
                             alt="Avatar Tailwind CSS Component"
                         />
+                    </div> */}
+                    <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                        <svg
+                            className="absolute w-12 h-12 text-gray-400 -left-1"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                fillRule="evenodd"
+                                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                clipRule="evenodd"
+                            />
+                        </svg>
                     </div>
                 </div>
                 <div>

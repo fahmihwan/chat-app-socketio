@@ -1,4 +1,8 @@
+import { useSelector } from "react-redux";
+
 const Nav = () => {
+    const chooseUser = useSelector((state) => state.chooseUser);
+    // console.log(chooseUser);
     return (
         <nav className="border border-gray-600 py-3 px-5 flex items-center">
             <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 mr-5">
@@ -15,7 +19,7 @@ const Nav = () => {
                     />
                 </svg>
             </div>
-            <span>+6282334337393</span>
+            <span>{chooseUser.fullname}</span>
         </nav>
     );
 };

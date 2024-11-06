@@ -4,7 +4,8 @@ import Nav from "../components/Nav";
 import { ChatBubleLeft, ChatBubleRight } from "../components/Other";
 import Sidebar from "../components/Sidebar";
 import { useSelector } from "react-redux";
-import { storeMessage } from "../api/chatRoom";
+import { getMessageHistory, storeMessage } from "../api/chatRoom";
+import { useEffectMessageHistories } from "../hooks/useEffectAllContact";
 
 
 
@@ -14,12 +15,23 @@ export const ChatRoom = () => {
     const senderUser = useSelector((state) => state.user);
     const [valueMessage, setValueMessage] = useState("");
 
+
     const [listMessage, setListMessage] = useState([]);
 
+    const fetchData = async () => {
+        try {
+            const response = await getMessageHistory(senderUser.id, receiveUser.id);
+            console.log(response);
+            setListMessage(response.data);
+        } catch (error) {
+            console.log(error);
+
+        }
+    };
+
     useEffect(() => {
-
-    }, [receiveUser])
-
+        fetchData();
+    }, [])
 
 
 
@@ -35,6 +47,7 @@ export const ChatRoom = () => {
             });
             console.log(cek);
             setValueMessage('')
+            fetchData()
         }
     };
 
@@ -51,20 +64,13 @@ export const ChatRoom = () => {
                         <Nav />
                         <div className=" relative h-[800px]">
                             <div className="h-[700px] overflow-y-scroll px-10">
-                                <ChatBubleLeft />
-                                <ChatBubleLeft />
-                                <ChatBubleLeft />
-                                <ChatBubleLeft />
+                                {listMessage?.length > 0 && listMessage.map((d, index) => (
+                                    // <UserEl key={index} fullname={d?.fullname} username={d?.username} onClick={() => handleChooseUser(d)} />
+                                    // <ChatBubleLeft  />
+                                    <ChatBubleRight key={index} content={d?.content} createdAt={d.createdAt} />
+                                ))}
 
-                                <ChatBubleRight />
-                                <ChatBubleRight />
 
-                                <ChatBubleRight />
-                                <ChatBubleRight />
-                                <ChatBubleRight />
-                                <ChatBubleRight />
-                                <ChatBubleRight />
-                                <ChatBubleRight />
                             </div>
                             <div className="px-14 absolute bottom-0 w-full">
                                 <InputMessage
