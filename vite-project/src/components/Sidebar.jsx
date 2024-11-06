@@ -16,7 +16,7 @@ const Sidebar = () => {
     }
 
     return (
-        <div className="p-5 border border-gray-600 h-full">
+        <div className="p-5 border border-gray-600 h-full bg-neutral">
             <h1 className="">Chats</h1>
             <br />
             <ul>
@@ -62,7 +62,7 @@ const UserEl = ({ fullname, index, username, onClick }) => {
                             alt="Avatar Tailwind CSS Component"
                         />
                     </div> */}
-                    <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                    <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 ">
                         <svg
                             className="absolute w-12 h-12 text-gray-400 -left-1"
                             fill="currentColor"

@@ -4,7 +4,7 @@ import Login from "./view/LoginUser";
 
 function App() {
     return (
-        <div>
+        <div className="">
             <Routes>
                 <Route path="" element={<Login />} />
                 <Route path="chat-room" element={<ChatRoom />} />

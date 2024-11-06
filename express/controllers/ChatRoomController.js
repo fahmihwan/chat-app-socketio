@@ -17,9 +17,12 @@ const getContactUsers = async (req, res) => {
 
 const getMessageHistory = async (req, res) => {
     const { senderId, receiveId } = req.params
-    const result = await prisma.$queryRaw`select * from messages ms
-     where ms.sender_id = ${Number(senderId)} 
-     and ms.receive_id =${Number(receiveId)}`;
+    // const result = await prisma.$queryRaw`select * from messages ms
+    //  where ms.sender_id = ${Number(senderId)} and ms.receive_id =${Number(receiveId)}`;
+
+    const result = await prisma.$queryRaw`select ms.* from messages ms
+     where ms.sender_id in (${Number(senderId)},${Number(receiveId)}) 
+     and ms.receive_id in (${Number(senderId)},${Number(receiveId)})`
 
     res.status(200).send({
         data: result,
