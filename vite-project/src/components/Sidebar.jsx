@@ -1,10 +1,13 @@
 import { useDispatch } from "react-redux";
 import { useEffectAllContact } from "../hooks/useEffectAllContact";
 import { setChooseUserSlice } from "../redux/features/chooseUserSlice";
+import Cookies from 'js-cookie';
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
     const { data, error } = useEffectAllContact()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleChooseUser = (d) => {
 
@@ -15,34 +18,52 @@ const Sidebar = () => {
         }))
     }
 
+
+    const logout = async () => {
+        localStorage.clear()
+        Cookies.remove('token')
+        Cookies.remove('token_id')
+        navigate('/', { replace: true })
+    }
+
     return (
-        <div className="p-5 border border-gray-600 h-full bg-neutral">
-            <h1 className="">Chats</h1>
-            <br />
-            <ul>
-                <li>
-                    <label className="input input-bordered flex items-center gap-2 mb-5">
-                        <input type="text" className="grow" placeholder="Search" />
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 16 16"
-                            fill="currentColor"
-                            className="h-4 w-4 opacity-70"
-                        >
-                            <path
-                                fillRule="evenodd"
-                                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                                clipRule="evenodd"
-                            />
-                        </svg>
-                    </label>
-                </li>
+        <div className="  border-gray-600 h-full bg-neutral">
+            <div className="flex  w-full h-full">
+                <div className="h-full w-[80px] bg-neutral border-r border-r-gray-600 flex flex-col-reverse p-2">
+                    <button onClick={logout} className="bg-warning text-black p-2 mb-3 rounded-full">
+                        Logout
+                    </button>
+                </div>
 
-                {data?.length > 0 && data.map((d, index) => (
-                    <UserEl key={index} fullname={d?.fullname} username={d?.username} onClick={() => handleChooseUser(d)} />
-                ))}
+                <div className="w-full p-5">
+                    <ul className="" >
+                        <li>
+                            <label className="input input-bordered flex  items-center w-full mb-5 ">
+                                <input type="text" className="" placeholder="Search" />
+                                {/* <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 16 16"
+                                    fill="currentColor"
+                                    className="h-4 w-full opacity-70"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                                        clipRule="evenodd"
+                                    />
+                                </svg> */}
+                            </label>
+                        </li>
 
-            </ul>
+                        {data?.length > 0 && data.map((d, index) => (
+                            <UserEl key={index} fullname={d?.fullname} username={d?.username} onClick={() => handleChooseUser(d)} />
+                        ))}
+
+                    </ul>
+                </div>
+
+            </div>
+
 
         </div >
     );

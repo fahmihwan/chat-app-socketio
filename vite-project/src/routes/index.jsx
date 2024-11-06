@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { ProtectedRoute, ProtectedRouteisNotAuth } from "./ProtectedRoute";
-import ChatRoom from "../view/ChatRoom";
+// import ChatRoom from "../view/ChatRoom";
 // const ListTransactionHistory = lazy(() => import('../view/profile/ListTransactionHistory'))
 // import ProtectedRoute from "./ProtectedRoute";
 
@@ -10,6 +10,7 @@ import ChatRoom from "../view/ChatRoom";
 // const Home = lazy(() => import("../view/home/Home"));
 const LoginUser = lazy(() => import("../view/LoginUser"));
 const RegisterUser = lazy(() => import("../view/RegisterUser"))
+const ChatRoom = lazy(() => import('../view/ChatRoom'))
 // const ListForRent = lazy(() => import("../view/home/ListForRent"));
 // const DetailForRent = lazy(() => import("../view/home/DetailForRent"));
 // const Profile = lazy(() => import("../view/profile/Profile"));
@@ -17,30 +18,30 @@ const RegisterUser = lazy(() => import("../view/RegisterUser"))
 // const Summary = lazy(() => import("../view/home/Summary"));
 
 const routes = createBrowserRouter([
-    {
-        path: "/",
-        element: <LoginUser />
-    },
-    {
-        path: "/register",
-        element: <RegisterUser />
-    },
-    {
-        path: "/chat-room",
-        element: <ChatRoom />,
-    }
     // {
     //     path: "/",
-    //     element: <ProtectedRouteisNotAuth element={<LoginUser />} />
+    //     element: <LoginUser />
     // },
     // {
     //     path: "/register",
-    //     element: <ProtectedRouteisNotAuth element={<RegisterUser />} />
+    //     element: <RegisterUser />
     // },
     // {
     //     path: "/chat-room",
-    //     element: <ProtectedRoute element={<ChatRoom />} />,
+    //     element: <ChatRoom />,
     // }
+    {
+        path: "/",
+        element: <ProtectedRouteisNotAuth element={<LoginUser />} />
+    },
+    {
+        path: "/register",
+        element: <ProtectedRouteisNotAuth element={<RegisterUser />} />
+    },
+    {
+        path: "/chat-room",
+        element: <ProtectedRoute element={<ChatRoom />} />,
+    }
     // {
     //     path: "/home",
     //     element: <ProtectedRoute element={<Home />} />,

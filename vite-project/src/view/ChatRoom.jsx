@@ -10,6 +10,9 @@ import Cookies from 'js-cookie';
 
 
 export const ChatRoom = () => {
+    // const user = Cookies.get('token')
+    // console.log(user);
+
     const receiveUser = useSelector((state) => state.chooseUser);
     const senderUser = useSelector((state) => state.user);
     const [valueMessage, setValueMessage] = useState("");
@@ -51,15 +54,17 @@ export const ChatRoom = () => {
         }
     };
 
+
     return (
-        <div className="px-16  py-4 ">
+
+        <div className="px-16  py-4 bg-[#212121]">
             <div className="w-full flex  h-[880px] ">
                 <div className="w-4/12">
                     <Sidebar />
                 </div>
 
                 {/* section chat */}
-                <div className="w-8/12 border  border-gray-700">
+                <div className="w-8/12 border  border-gray-700 bg-[#1d232a]">
                     <div className="h-full  w-full ">
                         <Nav />
                         <div className=" relative h-[800px]">
