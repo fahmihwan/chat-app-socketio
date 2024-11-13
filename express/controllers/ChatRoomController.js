@@ -19,7 +19,6 @@ const getMessageHistory = async (req, res) => {
     const { senderId, receiveId } = req.params
     // const result = await prisma.$queryRaw`select * from messages ms
     //  where ms.sender_id = ${Number(senderId)} and ms.receive_id =${Number(receiveId)}`;
-
     const result = await prisma.$queryRaw`select ms.* from messages ms
      where ms.sender_id in (${Number(senderId)},${Number(receiveId)}) 
      and ms.receive_id in (${Number(senderId)},${Number(receiveId)})`
@@ -50,6 +49,8 @@ const storeMessage = async (req, res) => {
             }
         })
 
+        // req.io.emit("new_message", { content: '"wkwkkwkw"' })
+        // console.log(cek);
 
         res.status(201).send({
             success: true,

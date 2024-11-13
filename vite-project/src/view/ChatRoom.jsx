@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { getMessageHistory, storeMessage } from "../api/chatRoom";
 
 import Cookies from 'js-cookie';
+import io from 'socket.io-client';
+const socket = io.connect("http://localhost:3001");
 
 
 export const ChatRoom = () => {
@@ -15,6 +17,7 @@ export const ChatRoom = () => {
     const [valueMessage, setValueMessage] = useState("");
     const user_id = Cookies.get('user_id')
     const chatEndRef = useRef(null);
+
 
     const [listMessage, setListMessage] = useState([]);
 
@@ -25,22 +28,25 @@ export const ChatRoom = () => {
             await chatEndRef.current?.scrollIntoView({ behavior: "smooth" })
         } catch (error) {
             console.log(error);
-
         }
     };
-
     useEffect(() => {
-
         if (receiveUser?.id != undefined && senderUser?.id != undefined) {
             fetchData();
         }
         chatEndRef.current?.scrollIntoView({ behavior: "smooth" })
-
-
     }, [senderUser.id, receiveUser.id])
 
+    useEffect(() => {
+        socket.emit("join_room", "myroom");
+    }, [])
 
-
+    useEffect(() => {
+        socket.on("receive_message", async (data) => {
+            await fetchData()
+            // console.log(tes);
+        });
+    }, [socket]);
 
 
 
@@ -52,6 +58,7 @@ export const ChatRoom = () => {
                 receive_id: receiveUser.id
             });
 
+            socket.emit("send_message", valueMessage);
             setValueMessage('')
             fetchData()
         }
